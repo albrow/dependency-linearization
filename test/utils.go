@@ -17,6 +17,7 @@ type dep struct {
 // by deps. expected should be a slice of phase ids in the expected
 // order.
 func runTestCase(t *testing.T, l common.Linearizer, deps []dep, expected []string) {
+	defer l.Reset()
 	// Create the phases and set up dependencies as needed
 	phases := newPhaseList(l)
 	for _, dep := range deps {

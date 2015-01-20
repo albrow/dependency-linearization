@@ -2,6 +2,7 @@ package implementations
 
 import (
 	"errors"
+	"fmt"
 	"github.com/albrow/dependency-linearization/common"
 	"github.com/gyuho/goraph/algorithm/tskahn"
 	"github.com/gyuho/goraph/graph/gs"
@@ -17,6 +18,7 @@ var GoraphGsKahn = &goraphGsKahnType{
 }
 
 func (g *goraphGsKahnType) AddPhase(p common.Phase) error {
+	fmt.Printf("AddPhase(%s)\n", p.Id())
 	vertex := gs.NewVertex(p.Id())
 	g.graph.AddVertex(vertex)
 	return nil
@@ -41,6 +43,10 @@ func (g *goraphGsKahnType) Linearize() ([]common.Phase, error) {
 		phases = append(phases, common.NewPhase(id))
 	}
 	return phases, nil
+}
+
+func (g *goraphGsKahnType) Reset() {
+	g.graph = gs.NewGraph()
 }
 
 func (g *goraphGsKahnType) String() string {

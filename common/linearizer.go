@@ -6,4 +6,6 @@ type Linearizer interface {
 	// AddDependency adds b as a dependency to a.
 	// It reads naturally as "a depends on b"
 	AddDependency(a, b Phase) error
+	// Reset clears all previous phases
+	Reset()
 }

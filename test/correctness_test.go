@@ -11,8 +11,16 @@ var testCases = []struct {
 	expected []string
 }{
 	{
+		deps:     []dep{{"a", ""}},
+		expected: []string{"a"},
+	},
+	{
 		deps:     []dep{{"a", "b"}, {"b", "c"}},
 		expected: []string{"a", "b", "c"},
+	},
+	{
+		deps:     []dep{{"a", "b"}, {"b", "c"}, {"c", "d"}},
+		expected: []string{"a", "b", "c", "d"},
 	},
 }
 
