@@ -2,7 +2,7 @@ package implementations
 
 import (
 	"errors"
-	"github.com/gyuho/goraph/algorithm/tskahn"
+	"github.com/gyuho/goraph/algorithm/tsdag"
 	"github.com/gyuho/goraph/graph/gs"
 	"strings"
 )
@@ -30,7 +30,7 @@ func (g *goraphGsKahnType) AddDependency(a, b string) error {
 
 func (g *goraphGsKahnType) Linearize() ([]string, error) {
 	// TODO: actually sort this with some algorithm
-	sorted, ok := tskahn.TSKahn(g.graph)
+	sorted, ok := tsdag.TSDAG(g.graph)
 	if !ok {
 		return nil, errors.New("Could not linearize dependencies. Was there a cycle?")
 	}
