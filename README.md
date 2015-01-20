@@ -49,22 +49,22 @@ benchmarks, since the pattern "NONE" does not appear in the name of any test fun
 These were the results on my laptop:
 
 ```
-BenchmarkLinear1Goraph  1000000        2448 ns/op
-BenchmarkLinear1Unix       1000     1771783 ns/op
-BenchmarkLinear1Graph    500000        3236 ns/op
-BenchmarkLinear3Goraph   200000       10977 ns/op
-BenchmarkLinear3Unix       1000     1781770 ns/op
-BenchmarkLinear3Graph    200000        7386 ns/op
-BenchmarkLinear10Goraph   30000       41373 ns/op
-BenchmarkLinear10Unix      1000     1784806 ns/op
-BenchmarkLinear10Graph   100000       24466 ns/op
-BenchmarkTree1Goraph     300000        5127 ns/op
-BenchmarkTree1Unix         1000     1749099 ns/op
-BenchmarkTree1Graph      300000        4857 ns/op
-BenchmarkTree3Goraph      50000       38955 ns/op
-BenchmarkTree3Unix         1000     1733239 ns/op
-BenchmarkTree3Graph      200000        9069 ns/op
-BenchmarkTree10Goraph      5000      337526 ns/op
-BenchmarkTree10Unix        1000     1787861 ns/op
-BenchmarkTree10Graph      50000       25375 ns/op
+BenchmarkLinear1Goraph  1000000      2465 ns/op
+BenchmarkLinear1Unix       1000   1725134 ns/op
+BenchmarkLinear1Graph    500000      3740 ns/op
+BenchmarkLinear3Goraph   200000     10602 ns/op
+BenchmarkLinear3Unix       1000   1838640 ns/op
+BenchmarkLinear3Graph    200000      9324 ns/op
+BenchmarkLinear10Goraph   30000     42080 ns/op
+BenchmarkLinear10Unix      1000   1772527 ns/op
+BenchmarkLinear10Graph    50000     28542 ns/op
+BenchmarkTree1Goraph     300000      5171 ns/op
+BenchmarkTree1Unix         1000   1780040 ns/op
+BenchmarkTree1Graph      200000      6545 ns/op
+BenchmarkTree3Goraph      50000     35202 ns/op
+BenchmarkTree3Unix         1000   1812251 ns/op
+BenchmarkTree3Graph      200000     11133 ns/op
+BenchmarkTree10Goraph      5000    362511 ns/op
+BenchmarkTree10Unix        1000   1853921 ns/op
+BenchmarkTree10Graph      50000     34455 ns/op
 ```
