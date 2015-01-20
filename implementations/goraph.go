@@ -42,5 +42,5 @@ func (g *goraphType) Reset() {
 }
 
 func (g *goraphType) String() string {
-	return "Goraph with gs type and Khan algorithm"
+	return "Goraph implementation"
 }
