@@ -21,10 +21,10 @@ func runTestCase(t *testing.T, l common.Linearizer, deps []dep, expected []strin
 	// Create the phases and set up dependencies as needed
 	phases := newPhaseList(l)
 	for _, dep := range deps {
-		p := phases.getOrCreate(dep.depender)
+		phases.nxAdd(dep.depender)
 		if dep.dependsOn != "" {
-			d := phases.getOrCreate(dep.dependsOn)
-			if err := l.AddDependency(p, d); err != nil {
+			phases.nxAdd(dep.dependsOn)
+			if err := l.AddDependency(dep.depender, dep.dependsOn); err != nil {
 				panic(err)
 			}
 		}
@@ -36,17 +36,17 @@ func runTestCase(t *testing.T, l common.Linearizer, deps []dep, expected []strin
 	compareResults(t, l, got, expected)
 }
 
-func compareResults(t *testing.T, l common.Linearizer, got []common.Phase, expected []string) {
+func compareResults(t *testing.T, l common.Linearizer, got []string, expected []string) {
 	if len(expected) != len(got) {
 		t.Errorf("Results were not the correct length for %s. Expected %d phases but got %d.\n\tExpected: %v\n\tGot: %v",
-			l, len(expected), len(got), expected, getIdsForPhases(got))
+			l, len(expected), len(got), expected, got)
 		return
 	}
 	for i, e := range expected {
 		g := got[i]
-		if e != g.Id() {
+		if e != g {
 			t.Errorf("Phase[%d] of results was incorrect for %s. Expected phase id = %s but got id = %s\n\tExpected: %v\n\tGot: %v",
-				i, l, e, g, expected, getIdsForPhases(got))
+				i, l, e, g, expected, got)
 			return
 		}
 	}
@@ -55,36 +55,27 @@ func compareResults(t *testing.T, l common.Linearizer, got []common.Phase, expec
 // phaseList is used for managing a list of phases
 // only really for testing purposes
 type phaseList struct {
-	phases     map[string]common.Phase
+	phases     map[string]struct{}
 	linearizer common.Linearizer
 }
 
 func newPhaseList(l common.Linearizer) *phaseList {
 	return &phaseList{
-		phases:     map[string]common.Phase{},
+		phases:     map[string]struct{}{},
 		linearizer: l,
 	}
 }
 
-func (pl *phaseList) getOrCreate(id string) common.Phase {
-	// if a phase with that id already exists,
-	// return it
-	if p, found := pl.phases[id]; found {
-		return p
+// nxAdd only adds the id if it doesn't already exist. It will
+// not add duplicate ids to the phaseList
+func (pl *phaseList) nxAdd(id string) {
+	if _, found := pl.phases[id]; !found {
+		// only add the phase to the phaseList and
+		// the underlying graph if it hasn't already
+		// been added
+		pl.phases[id] = struct{}{}
+		if err := pl.linearizer.AddPhase(id); err != nil {
+			panic(err)
+		}
 	}
-	// otherwise create and return a new phase
-	p := common.NewPhase(id)
-	pl.phases[id] = p
-	if err := pl.linearizer.AddPhase(p); err != nil {
-		panic(err)
-	}
-	return p
-}
-
-func getIdsForPhases(phases []common.Phase) []string {
-	ids := []string{}
-	for _, p := range phases {
-		ids = append(ids, p.Id())
-	}
-	return ids
 }

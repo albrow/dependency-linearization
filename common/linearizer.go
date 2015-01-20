@@ -1,11 +1,11 @@
 package common
 
 type Linearizer interface {
-	AddPhase(Phase) error
-	Linearize() ([]Phase, error)
+	AddPhase(string) error
+	Linearize() ([]string, error)
 	// AddDependency adds b as a dependency to a.
 	// It reads naturally as "a depends on b"
-	AddDependency(a, b Phase) error
+	AddDependency(a, b string) error
 	// Reset clears all previous phases
 	Reset()
 }
