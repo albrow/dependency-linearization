@@ -1,9 +1,10 @@
 # dependency-linearization
 An experiment in finding a fast dependency linearization algorithm for go.
 
-Not sure if this will ever develop this concept into a usable public library
-(I might at some point). But regardless, the code is here in case it might help
-someone.
+This code is a series of benchmarks and tests against different dependency
+linearization implementations. In the end, I found an implementation that was
+up to 15-20x faster when linearizing 10 phases. The code is here in case someone
+might find it helpful or interesting.
 
 ### The Goal
 
@@ -21,10 +22,7 @@ phases which is safe to execute sequentially.
 
 The first implementation I picked (somewhat randomly) for zoom demonstrated that the
 concept could work, and that it made the code easier to manage. But it had a huge impact
-on performance, so I went on the hunt for something faster. This code is a series of
-benchmarks and tests against different dependency linearization implementations. In
-the end, I found an implementation that was up to 15-20x faster when linearizing
-10 phases.
+on performance, so I went on the hunt for something faster.
 
 ### How to Run the Tests
 
@@ -44,3 +42,26 @@ go test ./... -run NONE -bench .
 
 The `-run NONE` part is optional. It tells go to skip the tests and only run the
 benchmarks, since the pattern "NONE" does not appear in the name of any test functions.
+
+These were the results on my laptop:
+
+```
+BenchmarkLinear1Goraph  1000000        2448 ns/op
+BenchmarkLinear1Unix       1000     1771783 ns/op
+BenchmarkLinear1Graph    500000        3236 ns/op
+BenchmarkLinear3Goraph   200000       10977 ns/op
+BenchmarkLinear3Unix       1000     1781770 ns/op
+BenchmarkLinear3Graph    200000        7386 ns/op
+BenchmarkLinear10Goraph   30000       41373 ns/op
+BenchmarkLinear10Unix      1000     1784806 ns/op
+BenchmarkLinear10Graph   100000       24466 ns/op
+BenchmarkTree1Goraph     300000        5127 ns/op
+BenchmarkTree1Unix         1000     1749099 ns/op
+BenchmarkTree1Graph      300000        4857 ns/op
+BenchmarkTree3Goraph      50000       38955 ns/op
+BenchmarkTree3Unix         1000     1733239 ns/op
+BenchmarkTree3Graph      200000        9069 ns/op
+BenchmarkTree10Goraph      5000      337526 ns/op
+BenchmarkTree10Unix        1000     1787861 ns/op
+BenchmarkTree10Graph      50000       25375 ns/op
+```
