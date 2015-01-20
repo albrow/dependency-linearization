@@ -5,6 +5,11 @@ import (
 	"testing"
 )
 
+type testCase struct {
+	deps     []dep
+	expected []string
+}
+
 // dep defines a dependency by two
 // phase ids. If you want to represent
 // only one phase, leave dependsOn blank
@@ -14,13 +19,13 @@ type dep struct {
 }
 
 // runTestCase runs l against a specific test case, which is defined
-// by deps. expected should be a slice of phase ids in the expected
+// by tc.deps. expected should be a slice of phase ids in the expected
 // order.
-func runTestCase(t *testing.T, l common.Linearizer, deps []dep, expected []string) {
+func runTestCase(t *testing.T, l common.Linearizer, tc testCase) {
 	defer l.Reset()
 	// Create the phases and set up dependencies as needed
 	phases := newPhaseList(l)
-	for _, dep := range deps {
+	for _, dep := range tc.deps {
 		phases.nxAdd(dep.depender)
 		if dep.dependsOn != "" {
 			phases.nxAdd(dep.dependsOn)
@@ -33,7 +38,7 @@ func runTestCase(t *testing.T, l common.Linearizer, deps []dep, expected []strin
 	if err != nil {
 		panic(err)
 	}
-	compareResults(t, l, got, expected)
+	compareResults(t, l, got, tc.expected)
 }
 
 func compareResults(t *testing.T, l common.Linearizer, got []string, expected []string) {

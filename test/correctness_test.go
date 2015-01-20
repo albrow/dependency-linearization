@@ -6,10 +6,7 @@ import (
 	"testing"
 )
 
-var testCases = []struct {
-	deps     []dep
-	expected []string
-}{
+var testCases = []testCase{
 	{
 		deps:     []dep{{"a", ""}},
 		expected: []string{"a"},
@@ -30,6 +27,6 @@ func TestGoraphGsKahn(t *testing.T) {
 
 func testLinearizer(t *testing.T, l common.Linearizer) {
 	for _, tc := range testCases {
-		runTestCase(t, l, tc.deps, tc.expected)
+		runTestCase(t, l, tc)
 	}
 }
