@@ -29,6 +29,10 @@ func TestUnix(t *testing.T) {
 	testLinearizer(t, implementations.Unix)
 }
 
+func TestGraph(t *testing.T) {
+	testLinearizer(t, implementations.Graph)
+}
+
 func testLinearizer(t *testing.T, l common.Linearizer) {
 	for _, tc := range testCases {
 		runTestCase(t, l, tc)
