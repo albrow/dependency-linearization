@@ -29,7 +29,6 @@ func (g *goraphType) AddDependency(a, b string) error {
 }
 
 func (g *goraphType) Linearize() ([]string, error) {
-	// TODO: actually sort this with some algorithm
 	sorted, ok := tsdag.TSDAG(g.graph)
 	if !ok {
 		return nil, errors.New("Could not linearize dependencies. Was there a cycle?")
