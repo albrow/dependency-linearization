@@ -150,7 +150,7 @@ func (p *preparer) getFuncs() []func() error {
 //    b  c  d
 //
 func makeTreeDeps(numBranches int) []dep {
-	if numBranches == 0 {
+	if numBranches <= 0 {
 		return []dep{{"0", ""}}
 	}
 	deps := []dep{}
@@ -170,7 +170,7 @@ func makeTreeDeps(numBranches int) []dep {
 //   a -> b -> c -> d
 //
 func makeLinearDeps(numPhases int) []dep {
-	if numPhases == 0 {
+	if numPhases <= 1 {
 		return []dep{{"0", ""}}
 	}
 	deps := []dep{}
