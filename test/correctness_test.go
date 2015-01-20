@@ -25,6 +25,10 @@ func TestGoraph(t *testing.T) {
 	testLinearizer(t, implementations.Goraph)
 }
 
+func TestUnix(t *testing.T) {
+	testLinearizer(t, implementations.Unix)
+}
+
 func testLinearizer(t *testing.T, l common.Linearizer) {
 	for _, tc := range testCases {
 		runTestCase(t, l, tc)
