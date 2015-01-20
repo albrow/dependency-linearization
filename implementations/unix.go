@@ -34,8 +34,10 @@ func (u *unixType) AddDependency(a, b string) error {
 func (u *unixType) Linearize() ([]string, error) {
 	// Set up the tsort command and get the stdin pipe
 	cmd := exec.Command("tsort")
-	out := bytes.NewBuffer([]byte{})
-	cmd.Stdout = out
+	stdout := bytes.NewBuffer([]byte{})
+	stderr := bytes.NewBuffer([]byte{})
+	cmd.Stdout = stdout
+	cmd.Stderr = stderr
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
 		return nil, err
@@ -75,16 +77,20 @@ func (u *unixType) Linearize() ([]string, error) {
 	if err := cmd.Wait(); err != nil {
 		if _, ok := err.(*exec.ExitError); ok {
 			// tsort reported an error
-			return nil, fmt.Errorf("Error in tsort command: %s", out.String())
+			return nil, fmt.Errorf("Error in tsort command: %s", stdout.String())
 		} else {
 			// There was some other problem
 			return nil, err
 		}
 	}
+	if stderr.String() != "" {
+		// tsort returned a 0 error code, but wrote something to stderr
+		return nil, fmt.Errorf("Error in tsort command: %s", stderr.String())
+	}
 	// If tsort worked, the output is one id per line
 	// and the last line is an empty space. We can parse
 	// that into a slice of ids pretty easily.
-	ids := strings.Split(strings.TrimSpace(out.String()), "\n")
+	ids := strings.Split(strings.TrimSpace(stdout.String()), "\n")
 	return ids, nil
 }
 

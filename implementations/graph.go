@@ -38,14 +38,18 @@ func (g *graphType) AddDependency(a, b string) error {
 }
 
 func (g *graphType) Linearize() ([]string, error) {
-	nodes := g.graph.TopologicalSort()
+	components := g.graph.StronglyConnectedComponents()
+	if len(components) != len(g.phases) {
+		return nil, errors.New("cycle detected!")
+	}
 	ids := []string{}
-	for _, n := range nodes {
-		id, ok := (*n.Value).(string)
+	for _, list := range components {
+		node := list[0]
+		id, ok := (*node.Value).(string)
 		if !ok {
-			msg := fmt.Sprintf("Could not convert value: %v to string!", n.Value)
-			if n.Value != nil {
-				typ := reflect.TypeOf(*n.Value)
+			msg := fmt.Sprintf("Could not convert value: %v to string!", node.Value)
+			if node.Value != nil {
+				typ := reflect.TypeOf(*node.Value)
 				msg += fmt.Sprintf(" Had type: %s", typ.String())
 			}
 			return nil, errors.New(msg)

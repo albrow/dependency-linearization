@@ -3,6 +3,7 @@ package test
 import (
 	"github.com/albrow/dependency-linearization/common"
 	"github.com/albrow/dependency-linearization/implementations"
+	"strings"
 	"testing"
 )
 
@@ -25,16 +26,44 @@ func TestGoraph(t *testing.T) {
 	testLinearizer(t, implementations.Goraph)
 }
 
+func TestGoraphCycle(t *testing.T) {
+	testCycle(t, implementations.Goraph)
+}
+
 func TestUnix(t *testing.T) {
 	testLinearizer(t, implementations.Unix)
+}
+
+func TestUnixCycle(t *testing.T) {
+	testCycle(t, implementations.Unix)
 }
 
 func TestGraph(t *testing.T) {
 	testLinearizer(t, implementations.Graph)
 }
 
+func TestGraphCycle(t *testing.T) {
+	testCycle(t, implementations.Graph)
+}
+
 func testLinearizer(t *testing.T, l common.Linearizer) {
 	for _, tc := range testCases {
 		runTestCase(t, l, tc)
 	}
+}
+
+func testCycle(t *testing.T, l common.Linearizer) {
+	// There is a cycle a -> b -> c -> a
+	deps := []dep{{"a", "b"}, {"b", "c"}, {"c", "a"}, {"b", "d"}, {"d", "e"}}
+	if err := prepareCase(l, deps).execute(); err != nil {
+		panic(err)
+	}
+	if _, err := l.Linearize(); err == nil {
+		t.Error("Expected error for cyclical graph but got none")
+	} else {
+		if !strings.Contains(err.Error(), "cycle") {
+			t.Errorf("Expected error to say something about a cycle but it did not. Got: %s", err.Error())
+		}
+	}
+	l.Reset()
 }

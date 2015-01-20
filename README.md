@@ -19,6 +19,9 @@ line by line inside of a MULTI/EXEC statement).
 some phases need to be executed before others.
 3. I needed a way to "linearize" the dependent phases, i.e. sort them into a list of
 phases which is safe to execute sequentially.
+4. Whatever method I choose needs a way to detect cycles and report an error if there
+is one. This would indicate there is some cyclical dependencies which cannot be
+linearized.
 
 The first implementation I picked (somewhat randomly) for zoom demonstrated that the
 concept could work, and that it made the code easier to manage. But it had a huge impact
