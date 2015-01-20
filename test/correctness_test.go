@@ -21,8 +21,8 @@ var testCases = []testCase{
 	},
 }
 
-func TestGoraphGsKahn(t *testing.T) {
-	testLinearizer(t, implementations.GoraphGsKahn)
+func TestGoraph(t *testing.T) {
+	testLinearizer(t, implementations.Goraph)
 }
 
 func testLinearizer(t *testing.T, l common.Linearizer) {

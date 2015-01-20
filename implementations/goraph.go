@@ -7,28 +7,28 @@ import (
 	"strings"
 )
 
-type goraphGsKahnType struct {
+type goraphType struct {
 	graph *gs.Graph
 }
 
-var GoraphGsKahn = &goraphGsKahnType{
+var Goraph = &goraphType{
 	graph: gs.NewGraph(),
 }
 
-func (g *goraphGsKahnType) AddPhase(id string) error {
+func (g *goraphType) AddPhase(id string) error {
 	vertex := gs.NewVertex(id)
 	g.graph.AddVertex(vertex)
 	return nil
 }
 
-func (g *goraphGsKahnType) AddDependency(a, b string) error {
+func (g *goraphType) AddDependency(a, b string) error {
 	va := g.graph.FindVertexByID(a)
 	vb := g.graph.FindVertexByID(b)
 	g.graph.Connect(va, vb, 0)
 	return nil
 }
 
-func (g *goraphGsKahnType) Linearize() ([]string, error) {
+func (g *goraphType) Linearize() ([]string, error) {
 	// TODO: actually sort this with some algorithm
 	sorted, ok := tsdag.TSDAG(g.graph)
 	if !ok {
@@ -38,10 +38,10 @@ func (g *goraphGsKahnType) Linearize() ([]string, error) {
 	return ids, nil
 }
 
-func (g *goraphGsKahnType) Reset() {
+func (g *goraphType) Reset() {
 	g.graph = gs.NewGraph()
 }
 
-func (g *goraphGsKahnType) String() string {
+func (g *goraphType) String() string {
 	return "Goraph with gs type and Khan algorithm"
 }

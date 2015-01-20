@@ -15,28 +15,28 @@ var (
 	tree10Deps   = makeTreeDeps(10)
 )
 
-func BenchmarkLinear1GoraphGsKahn(b *testing.B) {
-	benchmarkLinearizer(b, implementations.GoraphGsKahn, linear1Deps)
+func BenchmarkLinear1Goraph(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Goraph, linear1Deps)
 }
 
-func BenchmarkLinear3GoraphGsKahn(b *testing.B) {
-	benchmarkLinearizer(b, implementations.GoraphGsKahn, linear3Deps)
+func BenchmarkLinear3Goraph(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Goraph, linear3Deps)
 }
 
-func BenchmarkLinear10GoraphGsKahn(b *testing.B) {
-	benchmarkLinearizer(b, implementations.GoraphGsKahn, linear10Deps)
+func BenchmarkLinear10Goraph(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Goraph, linear10Deps)
 }
 
-func BenchmarkTree1GoraphGsKahn(b *testing.B) {
-	benchmarkLinearizer(b, implementations.GoraphGsKahn, tree1Deps)
+func BenchmarkTree1Goraph(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Goraph, tree1Deps)
 }
 
-func BenchmarkTree3GoraphGsKahn(b *testing.B) {
-	benchmarkLinearizer(b, implementations.GoraphGsKahn, tree3Deps)
+func BenchmarkTree3Goraph(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Goraph, tree3Deps)
 }
 
-func BenchmarkTree10GoraphGsKahn(b *testing.B) {
-	benchmarkLinearizer(b, implementations.GoraphGsKahn, tree10Deps)
+func BenchmarkTree10Goraph(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Goraph, tree10Deps)
 }
 
 // benchmarkLinearizer runs the given deps list through
