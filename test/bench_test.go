@@ -27,6 +27,10 @@ func BenchmarkLinear1Graph(b *testing.B) {
 	benchmarkLinearizer(b, implementations.Graph, linear1Deps)
 }
 
+func BenchmarkLinear1Maps(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Maps, linear1Deps)
+}
+
 func BenchmarkLinear3Goraph(b *testing.B) {
 	benchmarkLinearizer(b, implementations.Goraph, linear3Deps)
 }
@@ -37,6 +41,10 @@ func BenchmarkLinear3Unix(b *testing.B) {
 
 func BenchmarkLinear3Graph(b *testing.B) {
 	benchmarkLinearizer(b, implementations.Graph, linear3Deps)
+}
+
+func BenchmarkLinear3Maps(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Maps, linear3Deps)
 }
 
 func BenchmarkLinear10Goraph(b *testing.B) {
@@ -51,6 +59,10 @@ func BenchmarkLinear10Graph(b *testing.B) {
 	benchmarkLinearizer(b, implementations.Graph, linear10Deps)
 }
 
+func BenchmarkLinear10Maps(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Maps, linear10Deps)
+}
+
 func BenchmarkTree1Goraph(b *testing.B) {
 	benchmarkLinearizer(b, implementations.Goraph, tree1Deps)
 }
@@ -61,6 +73,10 @@ func BenchmarkTree1Unix(b *testing.B) {
 
 func BenchmarkTree1Graph(b *testing.B) {
 	benchmarkLinearizer(b, implementations.Graph, tree1Deps)
+}
+
+func BenchmarkTree1Maps(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Maps, tree1Deps)
 }
 
 func BenchmarkTree3Goraph(b *testing.B) {
@@ -75,6 +91,10 @@ func BenchmarkTree3Graph(b *testing.B) {
 	benchmarkLinearizer(b, implementations.Graph, tree3Deps)
 }
 
+func BenchmarkTree3Maps(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Maps, tree3Deps)
+}
+
 func BenchmarkTree10Goraph(b *testing.B) {
 	benchmarkLinearizer(b, implementations.Goraph, tree10Deps)
 }
@@ -85,6 +105,10 @@ func BenchmarkTree10Unix(b *testing.B) {
 
 func BenchmarkTree10Graph(b *testing.B) {
 	benchmarkLinearizer(b, implementations.Graph, tree10Deps)
+}
+
+func BenchmarkTree10Maps(b *testing.B) {
+	benchmarkLinearizer(b, implementations.Maps, tree10Deps)
 }
 
 // benchmarkLinearizer runs the given deps list through

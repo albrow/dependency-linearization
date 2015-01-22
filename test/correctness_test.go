@@ -46,6 +46,14 @@ func TestGraphCycle(t *testing.T) {
 	testCycle(t, implementations.Graph)
 }
 
+func TestMaps(t *testing.T) {
+	testLinearizer(t, implementations.Maps)
+}
+
+func TestMapsCycle(t *testing.T) {
+	testCycle(t, implementations.Maps)
+}
+
 func testLinearizer(t *testing.T, l common.Linearizer) {
 	for _, tc := range testCases {
 		runTestCase(t, l, tc)

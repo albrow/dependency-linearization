@@ -26,11 +26,11 @@ func runTestCase(t *testing.T, l common.Linearizer, tc testCase) {
 	defer l.Reset()
 	// Create the phases and set up dependencies as needed
 	if err := prepareCase(l, tc.deps).execute(); err != nil {
-		panic(err)
+		t.Fatalf("%s failed during preparation for test case: %v\nGot error: %s", l, tc.deps, err.Error())
 	}
 	got, err := l.Linearize()
 	if err != nil {
-		panic(err)
+		t.Fatalf("%s failed during linearize for test case: %v\nGot error: %s", l, tc.deps, err.Error())
 	}
 	compareResults(t, l, got, tc.expected)
 }
