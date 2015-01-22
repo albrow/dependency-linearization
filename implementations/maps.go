@@ -6,36 +6,36 @@ import (
 
 type mapsType struct {
 	// A map of phases to the phases they depend on
-	deps map[string]map[string]struct{}
+	phases map[string]map[string]struct{}
 }
 
 var Maps = &mapsType{
-	deps: map[string]map[string]struct{}{},
+	phases: map[string]map[string]struct{}{},
 }
 
 func (c *mapsType) AddPhase(id string) error {
-	c.deps[id] = map[string]struct{}{}
+	c.phases[id] = map[string]struct{}{}
 	return nil
 }
 
 func (c *mapsType) AddDependency(a, b string) error {
-	if _, found := c.deps[b]; !found {
+	if _, found := c.phases[b]; !found {
 		return fmt.Errorf("Could not find phase with id = %s", b)
 	}
-	c.deps[b][a] = struct{}{}
+	c.phases[b][a] = struct{}{}
 	return nil
 }
 
 func (c *mapsType) Linearize() ([]string, error) {
 	results := []string{}
-	for len(c.deps) > 0 {
+	for len(c.phases) > 0 {
 		deleted := []string{}
-		for phase, deps := range c.deps {
+		for phase, deps := range c.phases {
 			// Find the phases which have no dependencies left
 			// Add them to results and remove them from deps map
 			if len(deps) == 0 {
 				results = append(results, phase)
-				delete(c.deps, phase)
+				delete(c.phases, phase)
 				deleted = append(deleted, phase)
 			}
 		}
@@ -43,7 +43,7 @@ func (c *mapsType) Linearize() ([]string, error) {
 			return nil, fmt.Errorf("Detected cycle!")
 		} else {
 			for _, phaseToDelete := range deleted {
-				for _, deps := range c.deps {
+				for _, deps := range c.phases {
 					delete(deps, phaseToDelete)
 				}
 			}
@@ -60,19 +60,8 @@ func mapKeys(m map[string]struct{}) []string {
 	return keys
 }
 
-func copyMap(m map[string]map[string]struct{}) map[string]map[string]struct{} {
-	result := map[string]map[string]struct{}{}
-	for id, innerMap := range m {
-		result[id] = map[string]struct{}{}
-		for innerId := range innerMap {
-			result[id][innerId] = struct{}{}
-		}
-	}
-	return result
-}
-
 func (c *mapsType) Reset() {
-	c.deps = map[string]map[string]struct{}{}
+	c.phases = map[string]map[string]struct{}{}
 }
 
 func (c *mapsType) String() string {
