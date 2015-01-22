@@ -62,6 +62,14 @@ func TestListsCycle(t *testing.T) {
 	testCycle(t, implementations.Lists)
 }
 
+func TestPresort(t *testing.T) {
+	testLinearizer(t, implementations.Presort)
+}
+
+func TestPresortCycle(t *testing.T) {
+	testCycle(t, implementations.Presort)
+}
+
 func testLinearizer(t *testing.T, l common.Linearizer) {
 	for _, tc := range testCases {
 		runTestCase(t, l, tc)
