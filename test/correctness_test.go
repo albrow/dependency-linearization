@@ -24,6 +24,10 @@ var testCases = []testCase{
 		deps:     []dep{{"a", "b"}, {"b", "c"}, {"c", "d"}, {"a", "d"}},
 		expected: []string{"a", "b", "c", "d"},
 	},
+	{
+		deps:     []dep{{"a", "e"}, {"c", "d"}, {"a", "b"}, {"b", "c"}, {"b", "d"}, {"d", "e"}},
+		expected: []string{"a", "b", "c", "d", "e"},
+	},
 }
 
 func TestGoraph(t *testing.T) {
