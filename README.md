@@ -27,6 +27,16 @@ The first implementation I picked (somewhat randomly) for zoom demonstrated that
 concept could work, and that it made the code easier to manage. But it had a huge impact
 on performance, so I went on the hunt for something faster.
 
+The current winning implementation, called "Presort", takes advantage of the fact that in most
+cases, dependencies will be added before the phases that depend on them. This is true
+in both zoom and the test cases. It keeps all the phases in a doubly linked list (out
+of the standard library). On each call to addDependency, it checks if the dependency
+is already satisfied by the current ordering of phases (90% of the time it is!). If
+it's not, it reorders the list by either moving the phase directly after the one it
+depends on or moving the phase it depends on directly before it. If nether is possible
+because of existing dependencies, it returns an error declaring there is a cycle. It's
+quite fast, but very much tuned to my particular use case.
+
 ### How to Run the Tests
 
 `test/correctness_test.go` tests each implementation for correctness. You can run
@@ -49,22 +59,40 @@ benchmarks, since the pattern "NONE" does not appear in the name of any test fun
 These were the results on my laptop:
 
 ```
-BenchmarkLinear1Goraph  1000000      2465 ns/op
-BenchmarkLinear1Unix       1000   1725134 ns/op
-BenchmarkLinear1Graph    500000      3740 ns/op
-BenchmarkLinear3Goraph   200000     10602 ns/op
-BenchmarkLinear3Unix       1000   1838640 ns/op
-BenchmarkLinear3Graph    200000      9324 ns/op
-BenchmarkLinear10Goraph   30000     42080 ns/op
-BenchmarkLinear10Unix      1000   1772527 ns/op
-BenchmarkLinear10Graph    50000     28542 ns/op
-BenchmarkTree1Goraph     300000      5171 ns/op
-BenchmarkTree1Unix         1000   1780040 ns/op
-BenchmarkTree1Graph      200000      6545 ns/op
-BenchmarkTree3Goraph      50000     35202 ns/op
-BenchmarkTree3Unix         1000   1812251 ns/op
-BenchmarkTree3Graph      200000     11133 ns/op
-BenchmarkTree10Goraph      5000    362511 ns/op
-BenchmarkTree10Unix        1000   1853921 ns/op
-BenchmarkTree10Graph      50000     34455 ns/op
+BenchmarkLinear1Goraph	 1000000	      2001 ns/op
+BenchmarkLinear1Unix	    1000	   1750961 ns/op
+BenchmarkLinear1Graph	  500000	      3146 ns/op
+BenchmarkLinear1Maps	 1000000	      1563 ns/op
+BenchmarkLinear1Lists	 1000000	      1207 ns/op
+BenchmarkLinear1Presort	 2000000	       757 ns/op
+BenchmarkLinear3Goraph	  200000	      8927 ns/op
+BenchmarkLinear3Unix	    1000	   1778778 ns/op
+BenchmarkLinear3Graph	  200000	      5560 ns/op
+BenchmarkLinear3Maps	  500000	      3783 ns/op
+BenchmarkLinear3Lists	  300000	      4569 ns/op
+BenchmarkLinear3Presort	  500000	      3065 ns/op
+BenchmarkLinear10Goraph	   50000	     33329 ns/op
+BenchmarkLinear10Unix	    1000	   1765673 ns/op
+BenchmarkLinear10Graph	   50000	     25135 ns/op
+BenchmarkLinear10Maps	   50000	     25532 ns/op
+BenchmarkLinear10Lists	  100000	     19553 ns/op
+BenchmarkLinear10Presort	  200000	     10988 ns/op
+BenchmarkTree1Goraph	  300000	      4862 ns/op
+BenchmarkTree1Unix	    1000	   1757980 ns/op
+BenchmarkTree1Graph	  300000	      5590 ns/op
+BenchmarkTree1Maps	  500000	      3566 ns/op
+BenchmarkTree1Lists	  500000	      2951 ns/op
+BenchmarkTree1Presort	 1000000	      1935 ns/op
+BenchmarkTree3Goraph	   50000	     35126 ns/op
+BenchmarkTree3Unix	    1000	   1780420 ns/op
+BenchmarkTree3Graph	  200000	     10869 ns/op
+BenchmarkTree3Maps	  200000	      5886 ns/op
+BenchmarkTree3Lists	  200000	      6660 ns/op
+BenchmarkTree3Presort	  300000	      4021 ns/op
+BenchmarkTree10Goraph	    5000	    308559 ns/op
+BenchmarkTree10Unix	    1000	   1775422 ns/op
+BenchmarkTree10Graph	   50000	     28792 ns/op
+BenchmarkTree10Maps	  100000	     21667 ns/op
+BenchmarkTree10Lists	  100000	     20339 ns/op
+BenchmarkTree10Presort	  100000	     12157 ns/op
 ```
